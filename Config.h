@@ -16,6 +16,8 @@ namespace Config
   constexpr int   nEvents         = 1;
   constexpr int   nTracks         = 1;
 
+  // Propagation config
+  constexpr float deltaT = 0.1;   // 0.1s
 };
 
 #endif 
