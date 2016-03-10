@@ -37,7 +37,7 @@ void setupTrackByToyMC(TrackStateVec& mctruth, MeasurementStateVec& hits){
     mctruth.push_back(propState); 
     
     // now smear the measurement state
-    propState.parameters.At(0) += Config::measNoisePos * g_gaus(gen);
+    propState.parameters.At(0) += Config::measNoisePos * g_gaus(g_gen);
 
     // push back measurements + covariance (uncertainty)
     MeasurementState hit;

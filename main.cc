@@ -40,7 +40,7 @@ int main(int argc, const char* argv[])
 	"  --none       <num>    number of none    (def: %d)\n"
         ,
         argv[0],
-        test
+	none
       );
       exit(0);
     }

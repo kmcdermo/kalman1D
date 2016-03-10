@@ -3,18 +3,18 @@
 #include "Propagation.h"
 
 Event::Event(int id){
-  evtID = id;
-  mcTracks.clear();
-  recoTracks.clear();
+  evtID_ = id;
+  mcTracks_.clear();
+  recoTracks_.clear();
 }
 
-void Simulate(){
+void Event::Simulate(){
   for (int i = 0; i < Config::nTracks; i++){
     TrackStateVec       mcTruthTSVec;
     MeasurementStateVec hitVec;
     setupTrackByToyMC(mcTruthTSVec,hitVec);
     Track mcTrack(mcTruthTSVec,hitVec);
-    mcTracks.push_back(mcTrack);
+    mcTracks_.push_back(mcTrack);
   }  
 }
 

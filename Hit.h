@@ -5,7 +5,8 @@
 #include <vector>
 
 struct MeasurementState{
-MeasurementState(const SVector1 & par, const SMatrix11 & cov) : parameters(par), errors(cov) {}
+  MeasurementState() {}
+  MeasurementState(const SVector1 & par, const SMatrix11 & cov) : parameters(par), errors(cov) {}
   SVector1  parameters;
   SMatrix11 errors;
 };

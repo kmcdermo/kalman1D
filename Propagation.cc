@@ -21,8 +21,7 @@ TrackState propagateTrackToNexState(const TrackState& inputState){
   
   //perform propagation of state vector and state covariance
   outparams = transitionMatrix * inparams;
-  outerrs   = ROOT::Math::Similarity(transitionMatrix,inparams);
-  // Similarity(U,M) = U * M * U^T
+  outerrs   = transitionMatrix*inerrs*ROOT::Math::Transpose(transitionMatrix) + processNoise;
 
   TrackState outputState(outparams,outerrs);
   return outputState;

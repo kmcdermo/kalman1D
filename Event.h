@@ -12,10 +12,10 @@ class Event{
   void Fit();
   void Validate();
 
-  int evtID() {return evtID;}
+  int evtID() const {return evtID_;}
  private:
-  TrackVec mcTracks, recoTracks;
-  int evtID;
+  TrackVec mcTracks_, recoTracks_;
+  int evtID_;
 };
 
 #endif 
