@@ -11,7 +11,7 @@ OBJS := $(SRCS:.cc=.o)
 DEPS := $(SRCS:.cc=.d)
 
 clean:
-	-rm -f ${EXES} *.d *.o
+	-rm -f ${EXES} *.d *.o *~ *.root
 
 main: ${OBJS} 
 	${CXX} ${CXXFLAGS} -o $@ ${OBJS} ${LDFLAGS}

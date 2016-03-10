@@ -2,6 +2,7 @@
 #include <list>
 #include "Matrix.h"
 #include "Event.h"
+#include "ROOTValidation.h"
 
 typedef std::list<std::string> lStr_t;
 typedef lStr_t::iterator       lStr_i;
@@ -57,12 +58,17 @@ int main(int argc, const char* argv[])
     mArgs.erase(start, ++i);
   }
 
+  // make one instance of the validation for all events to use
+  Validation val("validation.root");
+
   for (int i = 0; i < Config::nEvents; i++){
-    Event ev(i);
+    Event ev(i,val);
+    std::cout << "Event #" << ev.evtID() << std::endl;
     ev.Simulate();
     ev.Fit();
     ev.Validate();
   }
 
+  val.save();
   return 0;
 }

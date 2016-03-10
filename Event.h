@@ -3,11 +3,12 @@
 
 #include "Hit.h"
 #include "Track.h"
+#include "ROOTValidation.h"
 
 class Event{
 
  public:
-  Event(int id);
+  Event(int id, Validation& v);
   void Simulate();
   void Fit();
   void Validate();
@@ -16,6 +17,7 @@ class Event{
  private:
   TrackVec mcTracks_, recoTracks_;
   int evtID_;
+  Validation& val_;
 };
 
 #endif 

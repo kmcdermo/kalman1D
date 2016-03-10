@@ -26,7 +26,7 @@ void trackFit(const TrackVec& evt_mc_tracks, TrackVec& evt_reco_tracks) {
       
       // now give the track all the lovely stuff
       recotrack.addTS(updatedState);
-      recotrack.addMS(hit); // extra copy of hits
+      //      recotrack.addMS(hit); // extra copy of hits
       recotrack.addChi2(chi2);
     } // end loop over hits
 
