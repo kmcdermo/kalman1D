@@ -5,11 +5,15 @@ Validation::Validation(TString fileName) {
   // define output file
   f_ = new TFile(fileName.Data(),"RECREATE");
   
+  initializeTree();
+  initializeConfigTree();
+}
+
+void Validation::initializeTree(){
   // define output tree
   tree_ = new TTree("tree","tree");
 
   // define branches
-  
   // bookkeeping
   tree_->Branch("evtID",&evtID_);
   tree_->Branch("trackID",&trackID_);
@@ -27,11 +31,26 @@ Validation::Validation(TString fileName) {
   tree_->Branch("exx_up",  &exx_up_);
   tree_->Branch("evxvx_up",&evxvx_up_);
   tree_->Branch("exvx_up", &exvx_up_);
-  tree_->Branch("exvx_up", &exvx_up_);
+  tree_->Branch("evxx_up", &evxx_up_);
   tree_->Branch("exx_hit", &exx_hit_);
 
   //chi2
   tree_->Branch("chi2", &chi2_);
+}
+
+void Validation::initializeConfigTree(){
+  // define config tree;
+  configtree_ = new TTree("configtree","configtree");
+  // define branches
+  configtree_->Branch("startpos",&startpos_);
+  configtree_->Branch("startvel",&startvel_);
+  configtree_->Branch("nHits",&nHits_);
+  configtree_->Branch("processNoisePos",&processNoisePos_);
+  configtree_->Branch("processNoiseVel",&processNoiseVel_);
+  configtree_->Branch("measNoisePos",&measNoisePos_);
+  configtree_->Branch("nEvents",&nEvents_);
+  configtree_->Branch("nTracks",&nTracks_);
+  configtree_->Branch("deltaT",&deltaT_);
 }
 
 void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackVec& evt_reco_tracks){
@@ -67,7 +86,22 @@ void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackV
   }
 }
 
-void Validation::save() {
+void Validation::fillConfigTree(){
+  startpos_        = Config::startpos;
+  startvel_        = Config::startvel;
+  nHits_           = Config::nHits;
+  processNoisePos_ = Config::processNoisePos;
+  processNoiseVel_ = Config::processNoiseVel;
+  measNoisePos_    = Config::measNoisePos;
+  nEvents_         = Config::nEvents;
+  nTracks_         = Config::nTracks;
+  deltaT_          = Config::deltaT;
+  
+  // fill at end of main()
+  configtree_->Fill();
+}
+
+void Validation::saveValidation(){
   f_->cd();
   f_->Write();
   f_->Close();

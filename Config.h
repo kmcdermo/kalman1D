@@ -13,11 +13,10 @@ namespace Config
   constexpr float measNoisePos    = 0.1; // 1mm
 
   // General config
-  constexpr int   nEvents         = 10;
-  constexpr int   nTracks         = 100;
+  constexpr int   nEvents         = 100;
+  constexpr int   nTracks         = 500;
 
   // Propagation config
   constexpr float deltaT = 0.1;   // 0.1s
 };
-
 #endif 

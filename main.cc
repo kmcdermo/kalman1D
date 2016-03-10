@@ -69,6 +69,7 @@ int main(int argc, const char* argv[])
     ev.Validate();
   }
 
-  val.save();
+  val.fillConfigTree();
+  val.saveValidation();
   return 0;
 }
