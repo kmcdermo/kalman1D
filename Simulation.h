@@ -3,6 +3,6 @@
 
 #include "Track.h"
 
-void setupTrackByToyMC(TrackStateVec& mctruth, MeasurementStateVec& hits);
+void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, MeasurementStateVec& hits);
 
 #endif

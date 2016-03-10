@@ -1,6 +1,6 @@
 #include "Event.h"
 #include "Simulation.h"
-#include "Propagation.h"
+#include "Fitting.h"
 
 Event::Event(int id){
   evtID_ = id;
@@ -10,13 +10,19 @@ Event::Event(int id){
 
 void Event::Simulate(){
   for (int i = 0; i < Config::nTracks; i++){
+    TrackState          mcgen;
     TrackStateVec       mcTruthTSVec;
     MeasurementStateVec hitVec;
-    setupTrackByToyMC(mcTruthTSVec,hitVec);
-    Track mcTrack(mcTruthTSVec,hitVec);
+    setupTrackByToyMC(mcgen,mcTruthTSVec,hitVec);
+    Track mcTrack(mcgen,mcTruthTSVec,hitVec);
     mcTracks_.push_back(mcTrack);
   }  
 }
 
-void Event::Fit(){}
+void Event::Fit(){
+
+  trackFit(mcTracks_,recoTracks_);
+
+}
+
 void Event::Validate(){}

@@ -1,7 +1,7 @@
 #include "Simulation.h"
 #include "Propagation.h"
 
-void setupTrackByToyMC(TrackStateVec& mctruth, MeasurementStateVec& hits){
+void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, MeasurementStateVec& hits){
 
   // generate starting position, velocity near origin
   float pos = Config::startpos*g_unif(g_gen);
@@ -15,28 +15,23 @@ void setupTrackByToyMC(TrackStateVec& mctruth, MeasurementStateVec& hits){
   cov.At(0,0) = pos * pos;
   cov.At(1,1) = vel * vel;
 
-  // make trackstates to begin saving
-  TrackState initState;
-  initState.parameters=SVector2(pos,vel);
-  initState.errors=cov;
+  // store MC generator truth here
+  mcgen.parameters=SVector2(pos,vel);
+  mcgen.errors=cov;
 
-  // store MC truth here
-  mctruth.push_back(initState);
-
-  TrackState tmpState = initState;
-
+  TrackState tmpState = mcgen; // input into propagation
   for (int ihit = 0; ihit < Config::nHits; ihit++){
     // First do "prediction"
-    TrackState propState = propagateTrackToNexState(tmpState);
+    TrackState propState = propagateTrackToNextState(tmpState);
 
     // Then do process noise --> just gaussians
     propState.parameters.At(0) += Config::processNoisePos * g_gaus(g_gen);
     propState.parameters.At(1) += Config::processNoiseVel * g_gaus(g_gen);
     
     // store info in MC after process noise
-    mctruth.push_back(propState); 
+    mcTruthTSVec.push_back(propState); 
     
-    // now smear the measurement state
+    // now smear the measurement state --> noisy gaussian
     propState.parameters.At(0) += Config::measNoisePos * g_gaus(g_gen);
 
     // push back measurements + covariance (uncertainty)
@@ -45,6 +40,6 @@ void setupTrackByToyMC(TrackStateVec& mctruth, MeasurementStateVec& hits){
     hit.errors=Config::measNoisePos*Config::measNoisePos;
     hits.push_back(hit);
 
-    tmpState = propState;
+    tmpState = propState; // smeared + scattered track state input for next layer
   }
 }

@@ -5,6 +5,6 @@
 #include "Hit.h"
 #include "Track.h"
 
-TrackState propagateTrackToNexState(const TrackState& inputState);
+TrackState propagateTrackToNextState(const TrackState& inputState);
 
 #endif

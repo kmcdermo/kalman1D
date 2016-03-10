@@ -10,14 +10,25 @@ struct TrackState{
   TrackState(const SVector2 & par, const SMatrix22 & cov) : parameters(par), errors(cov) {}
   SVector2  parameters;
   SMatrix22 errors;
+
+  // TS accessors
+  float x()     const {return parameters.At(0);}
+  float vx()    const {return parameters.At(1);}
+  float exx()   const {return errors.At(0,0);}
+  float evxvx() const {return errors.At(1,1);}
+  float exvx()  const {return errors.At(0,1);}
+  float evxx()  const {return errors.At(1,0);}
 };
 
 typedef std::vector<TrackState> TrackStateVec;
 
 class Track{
  public:
- Track(const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsVec_(tsvec), hitVec_(msvec) {}
-
+  Track() {}
+  Track(const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsVec_(tsvec), hitVec_(msvec) {}
+  Track(const TrackState &mcgen, const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsGen_(mcgen), tsVec_(tsvec), hitVec_(msvec) {}
+  
+  TrackState          getTSgen() const {return tsGen_;}
   TrackStateVec       getTSVec() const {return tsVec_;}
   MeasurementStateVec getMSVec() const {return hitVec_;}
 
@@ -27,20 +38,26 @@ class Track{
   TrackState       getTS(int layer) const {return tsVec_[layer];}
   MeasurementState getMS(int layer) const {return hitVec_[layer];}
 
-  float position(int layer) const {return tsVec_[layer].parameters.At(0);}
-  float velocity(int layer) const {return tsVec_[layer].parameters.At(1);}
+  float x    (int layer) const {return tsVec_[layer].x();}
+  float vx   (int layer) const {return tsVec_[layer].vx();}
 
-  float exx  (int layer) const {return tsVec_[layer].errors.At(0,0);}
-  float evxvx(int layer) const {return tsVec_[layer].errors.At(1,1);}
-  float exvx (int layer) const {return tsVec_[layer].errors.At(0,1);}
-  float evxx (int layer) const {return tsVec_[layer].errors.At(1,0);}
+  float exx  (int layer) const {return tsVec_[layer].exx();}
+  float evxvx(int layer) const {return tsVec_[layer].evxvx();}
+  float exvx (int layer) const {return tsVec_[layer].exvx();}
+  float evxx (int layer) const {return tsVec_[layer].evxx();}
 
-  float measpos(int layer) const {return hitVec_[layer].parameters.At(0);}
-  float measexx(int layer) const {return hitVec_[layer].errors.At(0,0);}
+  float mx   (int layer) const {return hitVec_[layer].x();}
+  float mexx (int layer) const {return hitVec_[layer].exx();}
+
+  void  addChi2(float chi2)           {chi2Vec_.push_back(chi2);}
+  float getLayerChi2(int layer) const {return chi2Vec_[layer];}
+  float getSumChi2() const;
 
  private:
+  TrackState          tsGen_;
   TrackStateVec       tsVec_;
   MeasurementStateVec hitVec_;
+  std::vector<float>  chi2Vec_;
 };
 
 typedef std::vector<Track> TrackVec;

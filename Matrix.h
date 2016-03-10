@@ -4,6 +4,8 @@
 #include "Math/SMatrix.h"
 #include "Config.h"
 
+// Matrices are defined as: <rows,columns>
+
 typedef ROOT::Math::SMatrix<float,2> SMatrix22;
 typedef ROOT::Math::SVector<float,2> SVector2;
 
