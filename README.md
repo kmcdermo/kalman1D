@@ -6,4 +6,5 @@ http://128.232.0.20/~rmf25/papers/Understanding%20the%20Basis%20of%20the%20Kalma
 To run this code, do the following:
 
 1) Compile with gcc: make main
+
 2) Run validation: root -l -b -q runValidation.C
