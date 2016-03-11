@@ -1,8 +1,7 @@
 # Kalman Filter 1D tracking
 Private code developed for pedagogical purposes for use of the Kalman filter in simple tracking applications.  The Kalman filter is ubiqitious in High Energy Physics for the use measuring the trajectory of particles moving through detectors.  In the context of HEP, the KF provides position and momentum estimates along the path of the particle. 
 
-I would be remiss if I did not include the seminal paper on the use of the KF in HEP, by Rudi Fruhwirth: https://inspirehep.net/record/259509?ln=en
-The paper itself is fairly dense, so I have included a set of some resources that went into implemented this code.
+I would be remiss if I did not include the seminal paper on the use of the KF in HEP, by Rudi Fruhwirth: https://inspirehep.net/record/259509?ln=en.  The paper itself is fairly dense, so I have included a small set of resources that went into implementing this code, as well extra references on the KF itself.
 
 The state model in this code is particle moving in 1D, and here the KF provides an estimator for particle position and velocity.
 An intuitive example and explanation of the Kalman filter specific to this model is derived here: 
@@ -27,19 +26,24 @@ When actually implementing, we start on the last filtered state, which is now la
 
 So by definition, the initial C_k+1,smooth x_k+1,smooth are the filtered state and covariance at the last layer.  In other words, the filtered state is equal to the smooth state only for the last layer we ended up on after the forward filtering.  x_k and C_k are the filtered state and covariance on the layer we are moving to (so you have to save this information from the forward propagation + update!).  At the start of smoothing, then, x_k and C_k are the filtered values on the second-to-last layer.  After smoothing the second-to-last layer, x_k,smooth and C_k,smooth become C_k+1,smooth and x_k+1,smooth for the next iteration.
 
+Additional resources:
+https://en.wikipedia.org/wiki/Kalman_filter
+http://home.wlu.edu/~levys/kalman_tutorial/
+http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
+http://bilgin.esme.org/BitsAndBytes/KalmanFilterforDummies
 
 ##How to run the code
 
-This code requires ROOT is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix clocks in at roughly 10k lines of code! 
+This code requires ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix clocks in at roughly 10k lines of code! 
 
-To run this code out-of-the-box, do the following:
+ROOT can be downloaded here: https://root.cern.ch/downloading-root.
+The nice thing about the PRO releases (recommended) is that they contain binaries for given OS's.  For Mac, you can simply download the .dmg file for ROOT5 and run ROOT out-of-the-box after setting the path.
 
-1) Compile with gcc: make main -j 2
+To run this code out-of-the-box (with ROOT previously installed), do the following:
 
-2) Run the executable: ./main
-
-3) Run validation: root -l -b -q runValidation.C
-
-4) View the output example pngs in the output directory validation/: x_pull.png, vx_pull.png, track.png
+1. Compile with gcc: make main -j 2
+2. Run the executable: ./main
+3. Run validation: root -l -b -q runValidation.C
+4. View the output example pngs in the output directory validation/: x_pull.png, vx_pull.png, track.png
 
 The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  Out-of-the-box running use MC generated state as input to KF and has no smoothing after filtering.
