@@ -1,6 +1,9 @@
 # Kalman Filter 1D tracking
 Private code developed for pedagogical purposes for use of the Kalman filter in simple tracking applications.  The Kalman filter is ubiqitious in High Energy Physics for the use measuring the trajectory of particles moving through detectors.  In the context of HEP, the KF provides position and momentum estimates along the path of the particle. 
 
+I would be remiss if I did not include the seminal paper on the use of the KF in HEP, by Rudi Fruhwirth: https://inspirehep.net/record/259509?ln=en
+The paper itself is fairly dense, so I have included a set of some resources that went into implemented this code.
+
 The state model in this code is particle moving in 1D, and here the KF provides an estimator for particle position and velocity.
 An intuitive example and explanation of the Kalman filter specific to this model is derived here: 
 http://128.232.0.20/~rmf25/papers/Understanding%20the%20Basis%20of%20the%20Kalman%20Filter.pdf
@@ -27,7 +30,7 @@ So by definition, the initial C_k+1,smooth x_k+1,smooth are the filtered state a
 
 ##How to run the code
 
-This code requires ROOT is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  
+This code requires ROOT is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix clocks in at roughly 10k lines of code! 
 
 To run this code out-of-the-box, do the following:
 
@@ -41,4 +44,3 @@ To run this code out-of-the-box, do the following:
 
 The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!
 Out-of-the-box running use MC generated state as input to KF and has no smoothing after filtering.
-
