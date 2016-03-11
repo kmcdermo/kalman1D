@@ -1,9 +1,11 @@
 #include "Fitting.h"
 #include "Matrix.h"
+#include "Track.h"
 #include "Hit.h"
 #include "LineEstimator.h"
 #include "Propagation.h"
 #include "Update.h"
+#include "Config.h"
 
 void trackFit(const TrackVec& evt_mc_tracks, TrackVec& evt_reco_tracks) {
   for (auto&& mctrack : evt_mc_tracks){ // loop over tracks in event

@@ -1,8 +1,8 @@
 #include <sstream>
 #include <list>
-#include "Matrix.h"
 #include "Event.h"
 #include "ROOTValidation.h"
+#include "Config.h"
 
 typedef std::list<std::string> lStr_t;
 typedef lStr_t::iterator       lStr_i;
@@ -54,6 +54,9 @@ int main(int argc, const char* argv[]){
 
   // make one instance of the validation for all events to use
   Validation val("validation.root");
+
+  // set values of special matrices once (same for all events)
+  Config::defineSpecialMatrices();
 
   for (int i = 0; i < Config::nEvents; i++){
     Event ev(i,val);

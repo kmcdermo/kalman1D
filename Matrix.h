@@ -2,7 +2,6 @@
 #define _matrix_
 
 #include "Math/SMatrix.h"
-#include "Config.h"
 
 // Matrices are defined as: <rows,columns>
 

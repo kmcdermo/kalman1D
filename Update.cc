@@ -1,9 +1,5 @@
 #include "Update.h"
-
-static const SMatrix22 idenMatrix22 = ROOT::Math::SMatrixIdentity();
-// define projection matrices
-static const SMatrix12 projMatrix   = ROOT::Math::SMatrixIdentity();
-static const SMatrix21 projMatrixT  = ROOT::Math::SMatrixIdentity();
+#include "Config.h"
 
 TrackState updateTrackState(const TrackState & propState, const MeasurementState & hit){
   // get inputs
@@ -14,23 +10,22 @@ TrackState updateTrackState(const TrackState & propState, const MeasurementState
       
   //make kalman gain matrix -- explicit calculations
   int invFail(0);
-  const SMatrix11 resErr     = measerrs + projMatrix*properrs*projMatrixT;
+  const SMatrix11 resErr     = measerrs + Config::projMatrix*properrs*Config::projMatrixT;
   const SMatrix11 resErrInv  = resErr.InverseFast(invFail); // unnecessary as a rank1 tensor is itself the inverse
-  const SMatrix21 KalmanGain = properrs*projMatrixT*resErrInv;
+  const SMatrix21 KalmanGain = properrs*Config::projMatrixT*resErrInv;
     
   //perform propagation of state vector and state covariance
-  const SVector2  upparams = propparams + KalmanGain*(measparams - projMatrix*propparams);
-  const SMatrix22 uperrs   = (idenMatrix22 - KalmanGain*projMatrix) * properrs;
+  const SVector2  upparams = propparams + KalmanGain*(measparams - Config::projMatrix*propparams);
+  const SMatrix22 uperrs   = (Config::idenMatrix22 - KalmanGain*Config::projMatrix) * properrs;
 
   TrackState updatedState(upparams,uperrs);
   return updatedState;
-
 }
 
 float computeChi2(const TrackState & updatedState, const MeasurementState & hit){
   int invFail(0);
-  const SVector1  residualparams  = hit.parameters - projMatrix*updatedState.parameters;  
-  const SMatrix11 residualerrs    = hit.errors     - projMatrix*updatedState.errors*projMatrixT; //covariance of filtered residauls
+  const SVector1  residualparams  = hit.parameters - Config::projMatrix*updatedState.parameters;  
+  const SMatrix11 residualerrs    = hit.errors     - Config::projMatrix*updatedState.errors*Config::projMatrixT; //covariance of filtered residauls
 
   return ROOT::Math::Similarity(residualparams,residualerrs.InverseFast(invFail)); // in this case SimilarityT() == Similarity()
 }

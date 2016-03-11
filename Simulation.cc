@@ -52,7 +52,7 @@ void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, Measureme
     // push back measurements + covariance (uncertainty) after making noisy measurement
     MeasurementState hit;
     hit.parameters=propState.parameters(0) + (Config::measNoisePos * g_gaus(g_gen));  //  smear the measurement state --> noisy gaussian
-    hit.errors=Config::measNoisePos*Config::measNoisePos;
+    hit.errors=Config::measurementNoise;
     hits.push_back(hit);
 
     if (Config::debug) { 
