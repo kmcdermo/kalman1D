@@ -4,12 +4,23 @@
 #include "Matrix.h"
 #include "Hit.h"
 #include <vector>
+#include <string>
+#include <iostream>
 
 struct TrackState{
   TrackState() {}
   TrackState(const SVector2 & par, const SMatrix22 & cov) : parameters(par), errors(cov) {}
   SVector2  parameters;
   SMatrix22 errors;
+
+  //dump data members
+  void dumpTrackState(const std::string & title){
+    std::cout << title << std::endl;
+    std::cout << "Parameters" << std::endl;
+    dumpVector(parameters);
+    std::cout << std::endl << "Errors" << std::endl;
+    dumpMatrix(errors);
+  }
 
   // TS accessors
   float x()     const {return parameters.At(0);}
@@ -25,12 +36,15 @@ typedef std::vector<TrackState> TrackStateVec;
 class Track{
  public:
   Track() {}
-  Track(const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsVec_(tsvec), hitVec_(msvec) {}
-  Track(const TrackState &mcgen, const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsGen_(mcgen), tsVec_(tsvec), hitVec_(msvec) {}
+  Track(const TrackState &tsInit, const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsInit_(tsInit), tsVec_(tsvec), hitVec_(msvec) {}
   
-  TrackState          getTSgen() const {return tsGen_;}
-  TrackStateVec       getTSVec() const {return tsVec_;}
-  MeasurementStateVec getMSVec() const {return hitVec_;}
+  TrackState          getTSinit() const {return tsInit_;}
+  TrackStateVec       getTSVec()  const {return tsVec_;}
+  MeasurementStateVec getMSVec()  const {return hitVec_;}
+
+  void setTSinit(const TrackState&          tsInit) {tsInit_=tsInit;}
+  void setTSVec (const TrackStateVec&       tsVec)  {tsVec_=tsVec;}
+  void setMSVec (const MeasurementStateVec& msVec)  {hitVec_=msVec;}
 
   void addTS(const TrackState& ts)       {tsVec_.push_back(ts);}
   void addMS(const MeasurementState& ms) {hitVec_.push_back(ms);}
@@ -54,7 +68,7 @@ class Track{
   float getSumChi2() const;
 
  private:
-  TrackState          tsGen_;
+  TrackState          tsInit_;
   TrackStateVec       tsVec_;
   MeasurementStateVec hitVec_;
   std::vector<float>  chi2Vec_;

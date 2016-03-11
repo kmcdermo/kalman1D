@@ -1,13 +1,22 @@
 #include "PlotValidation.hh"
 #include <TH1.h>
 #include <TGraphErrors.h>
-#include <TH2.h>
 #include <TStyle.h>
+#include <TSystem.h>
 #include <TCanvas.h>
 #include <TLegend.h>
 
-PlotValidation::PlotValidation(TString filename) : fChain(0) {
-  file = TFile::Open(filename.Data());
+PlotValidation::PlotValidation(TString filename, TString outdir, Bool_t mvinput) : fChain(0), inFileName(filename), outDir(outdir), mvInput(mvinput) {
+  file = TFile::Open(inFileName.Data());
+
+  // make output directory if it does not exist
+  FileStat_t dummyFileStat;
+  if (gSystem->GetPathInfo(outDir.Data(), dummyFileStat) == 1){
+    TString mkDir = "mkdir -p ";
+    mkDir += outDir.Data();
+    gSystem->Exec(mkDir.Data());
+  }
+
   TTree * tree = (TTree*)file->Get("tree");
   Init(tree);
 }
@@ -131,10 +140,10 @@ void PlotValidation::Validation(){
   canvas->cd();
   
   x_pull->Draw();
-  canvas->SaveAs("x_pull.png");
+  canvas->SaveAs(Form("%s/x_pull.png",outDir.Data()));
   
   vx_pull->Draw();
-  canvas->SaveAs("vx_pull.png");
+  canvas->SaveAs(Form("%s/vx_pull.png",outDir.Data()));
 
   delete canvas;
   delete x_pull;
@@ -155,11 +164,21 @@ void PlotValidation::Validation(){
   leg->AddEntry(tg_hits,"Measurements","ELP");
   leg->Draw("SAME");
 
-  canvas_track->SaveAs("track.png");
+  canvas_track->SaveAs(Form("%s/track.png",outDir.Data()));
  
   delete leg;
   delete canvas_track;
   delete tg_mctrack;
   delete tg_recotrack;
   delete tg_hits;
+
+  if (mvInput) {MoveInput();}
+}
+
+void PlotValidation::MoveInput(){
+  TString mvin = "mv ";
+  mvin += inFileName.Data();
+  mvin += " ";
+  mvin += outDir.Data();
+  gSystem->Exec(mvin.Data());
 }

@@ -10,8 +10,12 @@ SRCS := $(wildcard *.cc)
 OBJS := $(SRCS:.cc=.o)
 DEPS := $(SRCS:.cc=.d)
 
+ifeq ($(filter clean, ${MAKECMDGOALS}),)
+include ${DEPS}
+endif
+
 clean:
-	-rm -f ${EXES} *.d *.o *~ *.root
+	-rm -f ${EXES} *.d *.o *.so *~ *.root *.png
 
 main: ${OBJS} 
 	${CXX} ${CXXFLAGS} -o $@ ${OBJS} ${LDFLAGS}

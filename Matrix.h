@@ -15,6 +15,14 @@ typedef ROOT::Math::SVector<float,1> SVector1;
 typedef ROOT::Math::SMatrix<float,1,2> SMatrix12;
 typedef ROOT::Math::SMatrix<float,2,1> SMatrix21;
 
+template<typename Vector>
+void dumpVector(Vector v)
+{
+  for (int s=0;s<v.kSize;++s) {
+    std::cout << std::setw(12) << v.At(s) << " ";
+  }
+}
+
 // should work with any SMatrix
 template<typename Matrix>
 void dumpMatrix(Matrix m)

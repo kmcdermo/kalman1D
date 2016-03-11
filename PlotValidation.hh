@@ -3,6 +3,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TTree.h>
 #include <TString.h>
 
 class PlotValidation {
@@ -43,10 +44,16 @@ public :
   TBranch        *b_exx_hit;   //!
   TBranch        *b_chi2;   //!
 
-  PlotValidation(TString filename);
+  PlotValidation(TString filename, TString outdir, Bool_t mvinput);
   ~PlotValidation();
   Int_t    GetEntry(Long64_t entry);
   Long64_t LoadTree(Long64_t entry);
   void     Init(TTree *tree);
   void     Validation();
+  void     MoveInput();
+
+private:
+  TString inFileName;
+  TString outDir;
+  Bool_t  mvInput;
 };
