@@ -40,7 +40,6 @@ To run this code out-of-the-box, do the following:
 
 3) Run validation: root -l -b -q runValidation.C
 
-4) View the output example pngs: x_pull.png, vx_pull.png, track.png
+4) View the output example pngs in the output director validation/: x_pull.png, vx_pull.png, track.png
 
-The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!
-Out-of-the-box running use MC generated state as input to KF and has no smoothing after filtering.
+The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  Out-of-the-box running use MC generated state as input to KF and has no smoothing after filtering.
