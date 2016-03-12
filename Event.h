@@ -15,7 +15,7 @@ class Event{
 
   int evtID() const {return evtID_;}
  private:
-  TrackVec mcTracks_, recoTracks_;
+  TrackVec mcTracks_, filteredTracks_, smoothedTracks_;
   int evtID_;
   Validation& val_;
 };

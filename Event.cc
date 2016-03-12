@@ -5,24 +5,25 @@
 
 Event::Event(int id, Validation& v) : evtID_(id), val_(v) {
   mcTracks_.clear();
-  recoTracks_.clear();
+  filteredTracks_.clear();
+  smoothedTracks_.clear();
 }
 
 void Event::Simulate(){
-  for (int i = 0; i < Config::nTracks; i++){
+  for (int itrack = 0; itrack < Config::nTracks; itrack++){
     TrackState          mcgen;
     TrackStateVec       mcTruthTSVec;
     MeasurementStateVec hitVec;
     setupTrackByToyMC(mcgen,mcTruthTSVec,hitVec);
     Track mcTrack(mcgen,mcTruthTSVec,hitVec);
     mcTracks_.push_back(mcTrack);
-  }  
+  } 
 }
 
 void Event::Fit(){
-  trackFit(mcTracks_,recoTracks_);
+  trackFitter(mcTracks_,filteredTracks_,smoothedTracks_);
 }
 
 void Event::Validate(){
-  val_.fillTree(evtID_,mcTracks_,recoTracks_);
+  val_.fillTree(evtID_,mcTracks_,filteredTracks_,smoothedTracks_);
 }

@@ -14,7 +14,7 @@ struct TrackState{
   SMatrix22 errors;
 
   //dump data members
-  void dumpTrackState(const std::string & title){
+  void dumpTrackState (const std::string & title) const {
     std::cout << title << std::endl;
     std::cout << "Parameters" << std::endl;
     dumpVector(parameters);
@@ -63,9 +63,10 @@ class Track{
   float mx   (int layer) const {return hitVec_[layer].x();}
   float mexx (int layer) const {return hitVec_[layer].exx();}
 
-  void  addChi2(float chi2)           {chi2Vec_.push_back(chi2);}
-  float getLayerChi2(int layer) const {return chi2Vec_[layer];}
+  void  addChi2(float chi2)             {chi2Vec_.push_back(chi2);}
+  float getLayerChi2(int layer)   const {return chi2Vec_[layer];}
   float getSumChi2() const;
+  std::vector<float> getChi2Vec() const {return chi2Vec_;}
 
  private:
   TrackState          tsInit_;

@@ -31,19 +31,24 @@ int main(int argc, const char* argv[]){
 	     "Usage: %s [options]\n"
 	     "Options:\n"
 	     "  --debug           run code in debug mode (def: %s)\n"
-	     "  --line-est        use straight line extrapolation for fitting initial guess (def: %s)\n"
+	     "  --mc-init         use MC truth info as first input into Kalman filter (def: %s)\n"
+	     "  --no-smoother     do not use Kalman smoothing after Kalman filtering (def: %s)\n"
 	     ,
 	     argv[0],
 	     (Config::debug ? "true" : "false"),
-	     (Config::useLineEst ? "true" : "false")
+	     (Config::useLineEst  ? "true" : "false"),
+	     (Config::useSmoother ? "true" : "false")
 	     );
       exit(0);
     }
     else if (*i == "--debug"){
       Config::debug = true;
     }
-    else if (*i == "--line-est"){
-      Config::useLineEst = true;
+    else if (*i == "--mc-init"){
+      Config::useLineEst = false;
+    }
+    else if (*i == "--no-smoother"){
+      Config::useSmoother = false;
     }
     else{
       fprintf(stderr, "Error: Unknown option/argument '%s'.\n", i->c_str());
@@ -55,7 +60,7 @@ int main(int argc, const char* argv[]){
   // make one instance of the validation for all events to use
   Validation val("validation.root");
 
-  // set values of special matrices once (same for all events)
+  // set values of special matrices once (same for all events) -- SMatrix really finicky
   Config::defineSpecialMatrices();
 
   for (int i = 0; i < Config::nEvents; i++){

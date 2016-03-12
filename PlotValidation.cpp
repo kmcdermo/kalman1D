@@ -67,10 +67,12 @@ void PlotValidation::Init(TTree *tree){
 }
 
 void PlotValidation::Validation(){
-  // quick grab of configtree (deltaT)
+  // quick grab of configtree 
   TTree * configtree = (TTree*)file->Get("configtree");
   Float_t deltaT = 0.;
+  Int_t   nHits  = 0.;
   configtree->SetBranchAddress("deltaT",&deltaT);
+  configtree->SetBranchAddress("nHits",&nHits);
   configtree->GetEntry(0);
 
   //     This is the loop skeleton where:
@@ -84,10 +86,10 @@ void PlotValidation::Validation(){
   gStyle->SetOptFit(1011); // set fit style
 
   // declare and initialize pulls
-  TH1F * x_pull  = new TH1F("x_pull","Position Pull (Layer 20 only)",100,-5,5);
+  TH1F * x_pull  = new TH1F("x_pull",Form("Filtered Position Pull (Layer %s only)",atoi(nHits-1)),100,-5,5);
   x_pull->GetXaxis()->SetTitle("x_{mc} - x_{update} / #sigma(x_{update})");
   x_pull->GetYaxis()->SetTitle("nTracks");
-  TH1F * vx_pull = new TH1F("vx_pull","Velocity Pull (Layer 20 only)",100,-5,5);
+  TH1F * vx_pull = new TH1F("vx_pull",Form("Filtered Velocity Pull (Layer %s only)",atoi(nHits-1)),100,-5,5);
   vx_pull->GetXaxis()->SetTitle("vx_{mc} - vx_{update} / #sigma(vx_{update})");  
   vx_pull->GetYaxis()->SetTitle("nTracks");
 
@@ -126,7 +128,7 @@ void PlotValidation::Validation(){
     }
 
     // only look at pulls of last layer for now
-    if (layer != 19) continue;
+    if (layer != nHits-1) continue;
     x_pull ->Fill((x_mc  - x_up)  / std::sqrt(exx_up));
     vx_pull->Fill((vx_mc - vx_up) / std::sqrt(evxvx_up));
   }
@@ -160,7 +162,7 @@ void PlotValidation::Validation(){
 
   TLegend * leg = new TLegend(0.7,0.7,0.9,0.9);
   leg->AddEntry(tg_mctrack,"MC Trajectory","L");
-  leg->AddEntry(tg_recotrack,"Reconstructed Trajectory","ELP");
+  leg->AddEntry(tg_recotrack,"Filtered Trajectory","ELP");
   leg->AddEntry(tg_hits,"Measurements","ELP");
   leg->Draw("SAME");
 
