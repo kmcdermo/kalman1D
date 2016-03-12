@@ -30,14 +30,14 @@ int main(int argc, const char* argv[]){
       printf(
 	     "Usage: %s [options]\n"
 	     "Options:\n"
-	     "  --debug           run code in debug mode (def: %s)\n"
-	     "  --mc-init         use MC truth info as first input into Kalman filter (def: %s)\n"
-	     "  --no-smoother     do not use Kalman smoothing after Kalman filtering (def: %s)\n"
+	     "  --debug           run code in debug mode (default: %s)\n"
+	     "  --mc-init         use MC truth info as first input into Kalman filter (default: %s)\n"
+	     "  --no-smoother     do not use Kalman smoothing after Kalman filtering  (default: %s)\n"
 	     ,
 	     argv[0],
-	     (Config::debug ? "true" : "false"),
-	     (Config::useLineEst  ? "true" : "false"),
-	     (Config::useSmoother ? "true" : "false")
+	     (Config::debug       ? "true" : "false"),
+	     (Config::useLineEst  ? "false" : "true"),
+	     (Config::useSmoother ? "false" : "true")
 	     );
       exit(0);
     }

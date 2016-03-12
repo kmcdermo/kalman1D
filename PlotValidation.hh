@@ -18,13 +18,19 @@ public :
   Int_t           layer;
   Float_t         x_mc;
   Float_t         vx_mc;
-  Float_t         x_up;
-  Float_t         vx_up;
+  Float_t         x_filter;
+  Float_t         vx_filter;
+  Float_t         x_smooth;
+  Float_t         vx_smooth;
   Float_t         x_hit;
-  Float_t         exx_up;
-  Float_t         evxvx_up;
-  Float_t         exvx_up;
-  Float_t         evxx_up;
+  Float_t         exx_filter;
+  Float_t         evxvx_filter;
+  Float_t         exvx_filter;
+  Float_t         evxx_filter;
+  Float_t         exx_smooth;
+  Float_t         evxvx_smooth;
+  Float_t         exvx_smooth;
+  Float_t         evxx_smooth;
   Float_t         exx_hit;
   Float_t         chi2;
 
@@ -34,13 +40,19 @@ public :
   TBranch        *b_layer;   //!
   TBranch        *b_x_mc;   //!
   TBranch        *b_vx_mc;   //!
-  TBranch        *b_x_up;   //!
-  TBranch        *b_vx_up;   //!
+  TBranch        *b_x_filter;   //!
+  TBranch        *b_vx_filter;   //!
+  TBranch        *b_x_smooth;   //!
+  TBranch        *b_vx_smooth;   //!
   TBranch        *b_x_hit;   //!
-  TBranch        *b_exx_up;   //!
-  TBranch        *b_evxvx_up;   //!
-  TBranch        *b_exvx_up;   //!
-  TBranch        *b_evxx_up;   //!
+  TBranch        *b_exx_filter;   //!
+  TBranch        *b_evxvx_filter;   //!
+  TBranch        *b_exvx_filter;   //!
+  TBranch        *b_evxx_filter;   //!
+  TBranch        *b_exx_smooth;   //!
+  TBranch        *b_evxvx_smooth;   //!
+  TBranch        *b_exvx_smooth;   //!
+  TBranch        *b_evxx_smooth;   //!
   TBranch        *b_exx_hit;   //!
   TBranch        *b_chi2;   //!
 

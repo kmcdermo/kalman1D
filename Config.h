@@ -8,7 +8,7 @@ namespace Config
   // Simulation Config
   constexpr float startpos = 1.0; // 1cm
   constexpr float startvel = 20.0; // 20cm/s
-  constexpr int   nHits    = 5;
+  constexpr int   nHits    = 20;
 
   // noise uncertainty + variances
   constexpr float processNoisePos = 0.1; // 1mm 
@@ -23,11 +23,10 @@ namespace Config
   constexpr float processNoiseVelSF = 1.0; // velocity variance fudge factor
   constexpr float measNoisePosSF    = 1.0; // measurement noise fudge factor
 
-
   // General config
   extern    bool debug;
-  constexpr int  nEvents = 1;
-  constexpr int  nTracks = 1;
+  constexpr int  nEvents = 100;
+  constexpr int  nTracks = 500;
 
   // Propagation config
   constexpr float deltaT = 0.1;   // 0.1s
