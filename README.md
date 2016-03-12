@@ -13,7 +13,7 @@ In the case of tracking a rail car, we can say that it started at the origin wit
 
 The above paper does include two inmportant aspects of extensions of the Kalman filter: non-linear state model extensions of the KF and Kalman smoothing.  As this code is for the simple example of a particle moving in 1D, the state model is linear and will not make use of the non-linear extension.  It is important to note, though, that in HEP, typically particles are subjected to a solenoidal magnetic field, which yields the non-linear helix equations.  Therefore, in HEP, one would then utilize the Extended Kalman Filter (EKF).  
 
-Kalman smoothing, however, is applicable to this example. The mmoothing equations are bit more opaque, although a light explanation is here in addition to more info on how the KF is used in HEP:
+Kalman smoothing, however, is applicable to this example. The smoothing equations are bit more opaque, although a light explanation is here in addition to more info on how the KF is used in HEP:
 http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.1034&rep=rep1&type=pdf
 
 We can make use of equations 10, 11 in 16-18. This yields the following:
