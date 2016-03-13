@@ -7,6 +7,7 @@
 #include <TSystem.h>
 #include <TCanvas.h>
 #include <TLegend.h>
+#include <iostream>
 
 PlotValidation::PlotValidation(TString filename, TString outdir, Bool_t mvinput) : fChain(0), inFileName(filename), outDir(outdir), mvInput(mvinput) {
   file = TFile::Open(inFileName.Data());
@@ -102,16 +103,16 @@ void PlotValidation::Validation(){
   vx_pull_smooth->GetYaxis()->SetTitle("nTracks");
 
   // follow trajectory of single track!
-  TGraphErrors * tg_mctrack   = new TGraphErrors(20);
+  TGraphErrors * tg_mctrack   = new TGraphErrors(nHits);
   tg_mctrack->SetTitle("Position vs. Time of a single track;Time [s];Position [cm]");
   tg_mctrack->SetLineColor(kBlack);
-  TGraphErrors * tg_filtertrack = new TGraphErrors(20);
+  TGraphErrors * tg_filtertrack = new TGraphErrors(nHits);
   tg_filtertrack->SetMarkerColor(kRed);
   tg_filtertrack->SetLineColor(kRed);
-  TGraphErrors * tg_smoothtrack = new TGraphErrors(20);
+  TGraphErrors * tg_smoothtrack = new TGraphErrors(nHits);
   tg_smoothtrack->SetMarkerColor(kBlue);
   tg_smoothtrack->SetLineColor(kBlue);
-  TGraphErrors * tg_hits      = new TGraphErrors(20);
+  TGraphErrors * tg_hits      = new TGraphErrors(nHits-1);
   tg_hits->SetMarkerColor(kGreen+2);
   tg_hits->SetLineColor(kGreen+2);
   tg_hits->SetMarkerStyle(kFullDotMedium);
@@ -134,8 +135,7 @@ void PlotValidation::Validation(){
     
     // track one particle
     if (evtID == 0 && trackID == 0){
-      if (layer == -1) continue;
-      tg_mctrack     ->SetPoint(layer+1,(layer+1)*deltaT,x_mc);
+      tg_mctrack     ->SetPoint    (layer+1,(layer+1)*deltaT,x_mc);
 
       tg_filtertrack->SetPoint     (layer+1,(layer+1)*deltaT,x_filter);
       tg_filtertrack->SetPointError(layer+1,0.,exx_filter);
@@ -143,8 +143,10 @@ void PlotValidation::Validation(){
       tg_smoothtrack->SetPoint     (layer+1,(layer+1)*deltaT,x_smooth);
       tg_smoothtrack->SetPointError(layer+1,0.,exx_smooth);
 
-      tg_hits       ->SetPoint     (layer+1,(layer+1)*deltaT,x_hit);
-      tg_hits       ->SetPointError(layer+1,0.,exx_hit);
+      if (layer >= 0) { // skip the vertex layer ... no hit there!
+	tg_hits       ->SetPoint     (layer,(layer+1)*deltaT,x_hit);
+	tg_hits       ->SetPointError(layer,0.,exx_hit);
+      }
     }
 
     // only look at filtered pulls of last layer for now
