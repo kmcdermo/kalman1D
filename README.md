@@ -1,5 +1,5 @@
 # Kalman Filter 1D tracking
-Private code developed for pedagogical purposes for use of the Kalman filter in simple tracking applications.  The Kalman filter is ubiqitious in High Energy Physics for the use measuring the trajectory of particles moving through detectors.  In the context of HEP, the KF provides position and momentum estimates along the path of the particle. 
+Private code developed for pedagogical purposes for use of the Kalman filter (KF) in simple tracking applications.  The Kalman filter is ubiqitious in High Energy Physics (HEP) for the use of measuring the trajectory of particles moving through detectors.  In the context of HEP, the KF provides position and momentum estimates along the path of the particle. 
 
 I would be remiss if I did not include the seminal paper on the use of the KF in HEP, by Rudi Fruhwirth: https://inspirehep.net/record/259509?ln=en.  The paper itself is fairly dense, so I have included a small set of resources that went into implementing this code, as well extra references on the KF itself.
 
@@ -34,7 +34,7 @@ Additional resources:
 
 ##How to run the code
 
-This code requires ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix clocks in at roughly 10k lines of code! 
+This code requires ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix port clocks in at roughly 10k lines of code (under the Math directory)! 
 
 ROOT can be downloaded here: https://root.cern.ch/downloading-root.
 The nice thing about the PRO releases (recommended) is that they contain binaries for given OS's.  For Mac, you can simply download the .dmg file for ROOT5 and run ROOT out-of-the-box after setting the path.
@@ -44,6 +44,6 @@ To run this code out-of-the-box (with ROOT previously installed), do the followi
 1. Compile with gcc: make main -j 2
 2. Run the executable: ./main
 3. Run validation: root -l -b -q runValidation.C
-4. View the output example pngs in the output directory validation/: x_pull.png, vx_pull.png, track.png
+4. View the output example pngs in the output directory validation/: x_pull_filter.png, vx_pull_filter.ong, x_pull_smooth.png, vx_pull_smooth.png, track.png
 
 The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
