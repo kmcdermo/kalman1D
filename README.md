@@ -27,10 +27,16 @@ When actually implementing, we start on the last filtered state, which is now la
 So by definition, the initial C_k+1,smooth x_k+1,smooth are the filtered state and covariance at the last layer.  In other words, the filtered state is equal to the smooth state only for the last layer we ended up on after the forward filtering.  x_k and C_k are the filtered state and covariance on the layer we are moving to (so you have to save this information from the forward propagation + update!).  At the start of smoothing, then, x_k and C_k are the filtered values on the second-to-last layer.  After smoothing the second-to-last layer, x_k,smooth and C_k,smooth become C_k+1,smooth and x_k+1,smooth for the next iteration.
 
 Additional resources:
-* https://en.wikipedia.org/wiki/Kalman_filter
-* http://home.wlu.edu/~levys/kalman_tutorial/
-* http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
-* http://bilgin.esme.org/BitsAndBytes/KalmanFilterforDummies
+* A nice interactive tutorial of KF with a plane landing: http://home.wlu.edu/~levys/kalman_tutorial/
+* Wikipedia: https://en.wikipedia.org/wiki/Kalman_filter
+* Blog: http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
+* Blog: http://bilgin.esme.org/BitsAndBytes/KalmanFilterforDummies
+
+More technical resources:
+* A little more rigorous derivation of KF with linear algebra: http://web.mit.edu/kirtley/kirtley/binlustuff/literature/control/Kalman%20filter.pdf
+* Derivations of KF as the optimal linear estimator: http://webee.technion.ac.il/people/shimkin/Estimation09/ch4_KFderiv.pdf
+* A little more mathy derivation: http://www.aticourses.com/kalman_filter.pdf
+* Another mathy derivation: https://users.ece.cmu.edu/~byronyu/papers/derive_ks.pdf
 
 ##How to run the code
 
@@ -46,4 +52,4 @@ To run this code out-of-the-box (with ROOT previously installed), do the followi
 3. Run validation: root -l -b -q runValidation.C
 4. View the output example pngs in the output directory validation/: x_pull_filter.png, vx_pull_filter.ong, x_pull_smooth.png, vx_pull_smooth.png, track.png
 
-The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
+The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  In particular, messing with the number of hits, the associated size of the parameters and variances, and also the fudge factors, help reveal the strength of the KF when tweaking these parameters.  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
