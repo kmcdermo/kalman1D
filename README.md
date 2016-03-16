@@ -7,14 +7,12 @@ The state model in this code is particle moving in 1D, and here the KF provides 
 An intuitive example and explanation of the Kalman filter specific to this model is derived here: 
 http://128.232.0.20/~rmf25/papers/Understanding%20the%20Basis%20of%20the%20Kalman%20Filter.pdf
 
-I in fact use the same state vector and transition matrix  
-x_k   =  position
+I in fact use the same state vector and transition matrix as the inituitive derivation. The first set in F_k-1 is the top row, the second set is the bottom row.  
+x_k   =  {position, velocity}
 
-         velocity
+F_k-1 =  {{1, delT} , {0, 1}}
 
-F_k-1 =  1 delT
 
-         0  1
 
 It is important to keep in mind that the KF is recursive.  So when it is actually implemented, it needs an input of the form of some initial guess of the KF state and covariance.  As such, from the paper above the state and covariance of x_k-1 and C_k-1 must first be provided before performing the KF propagation and update.  
 
@@ -33,9 +31,7 @@ We can make use of equations 10, 11 in 16-18. This yields the following:
 
 As shown in equation 19, A_k in the presence of no process noise (i.e. the noise that can kink the track in its propagation) reduces to the back propagator: (F_k)^-1. From the transition matrix defined above:
 
-(F_k)^-1 =  1 -delT
-
-            0   1
+(F_k)^-1 =  {{1, -delT} , {0, 1}}
 
 which then takes a state from x_k+1 to x_k (backwards in time)!  
 
