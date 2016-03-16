@@ -12,8 +12,6 @@ x_k   =  {position, velocity}
 
 F_k-1 =  {{1, delT} , {0, 1}}
 
-
-
 It is important to keep in mind that the KF is recursive.  So when it is actually implemented, it needs an input of the form of some initial guess of the KF state and covariance.  As such, from the paper above the state and covariance of x_k-1 and C_k-1 must first be provided before performing the KF propagation and update.  
 
 In the case of tracking a rail car, we can say that it started at the origin with max velocity, and we assign a large uncertainty to the each value.  After the first KF propagation + update, this initial guess will be weighted down.  The output of the first propagation + update, x_k and C_k now become x_k-1 and C_k-1 in the next propagation + update.  
@@ -35,7 +33,7 @@ As shown in equation 19, A_k in the presence of no process noise (i.e. the noise
 
 which then takes a state from x_k+1 to x_k (backwards in time)!  
 
-When actually implementing, we start smoothing on the second to last filtered state, which is labeled k. By definition, the initial C_k+1,smooth x_k+1,smooth are the filtered state and covariance at the last layer (as explained above).  x_k and C_k are then the filtered state and covariance on the layer we are smoothing (so you have to save this information from the forward propagation + update!).  At the start of smoothing, then, x_k and C_k are the filtered values on the second-to-last layer.  After smoothing the second-to-last layer, x_k,smooth and C_k,smooth become C_k+1,smooth and x_k+1,smooth for the third-to-last layer, and x_k and C_k are now the filtered state and covariance for the third-to-last layer. 
+When actually implementing, we start smoothing on the second to last filtered state, which is labeled k. By definition, the initial C_k+1,smooth x_k+1,smooth are the filtered state and covariance at the last layer (as explained above).  x_k and C_k are then the filtered state and covariance on the layer we are smoothing (so you have to save this information from the forward propagation + update!).  At the start of smoothing, then, x_k and C_k are the filtered values on the second-to-last layer.  After smoothing the second-to-last layer, x_k,smooth and C_k,smooth become C_k+1,smooth and x_k+1,smooth for the next smoothing step for the third-to-last layer, and x_k and C_k are now the filtered state and covariance for the third-to-last layer. 
 
 The smoothing proceeeds over all layers. We can actually perform a smoothing to the production point of the track. This means that after smoothing the innermost layer, the filtered state x_k is the initial guess we made about the production point. 
 
