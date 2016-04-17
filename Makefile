@@ -15,7 +15,7 @@ include ${DEPS}
 endif
 
 clean:
-	-rm -f ${EXES} *.d *.o *.so *~ *.root *.png
+	-rm -rf ${EXES} *.d *.o *.so *~ *.root *.png validation/
 
 main: ${OBJS} 
 	${CXX} ${CXXFLAGS} -o $@ ${OBJS} ${LDFLAGS}
