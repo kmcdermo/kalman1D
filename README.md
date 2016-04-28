@@ -7,7 +7,7 @@ The state model in this code is particle moving in 1D, and here the KF provides 
 An intuitive example and explanation of the Kalman filter specific to this model is derived here: 
 http://128.232.0.20/~rmf25/papers/Understanding%20the%20Basis%20of%20the%20Kalman%20Filter.pdf
 
-I in fact use the same state vector and transition matrix as the inituitive derivation. The first set in F_k-1 is the top row, the second set is the bottom row.  
+I in fact use the same state vector and transition matrix as the intuitive derivation. The first set in F_k-1 is the top row, the second set is the bottom row.  
 x_k   =  {position, velocity}
 
 F_k-1 =  {{1, delT} , {0, 1}}
@@ -16,7 +16,7 @@ It is important to keep in mind that the KF is recursive.  So when it is actuall
 
 In the case of tracking a rail car, we can say that it started at the origin with max velocity, and we assign a large uncertainty to the each value.  After the first KF propagation + update, this initial guess will be weighted down.  The output of the first propagation + update, x_k and C_k now become x_k-1 and C_k-1 in the next propagation + update.  
 
-The above paper does include two inmportant aspects of extensions of the Kalman filter: non-linear state model extensions of the KF and Kalman smoothing.  As this code is for the simple example of a particle moving in 1D, the state model is linear and will not make use of the non-linear extension.  It is important to note, though, that in HEP, typically particles are subjected to a solenoidal magnetic field, which yields the non-linear helix equations.  Therefore, in HEP, one would then utilize the Extended Kalman Filter (EKF).  
+The above paper does not include two important aspects of extensions of the Kalman filter: non-linear state model extensions of the KF and Kalman smoothing.  As this code is for the simple example of a particle moving in 1D, the state model is linear and will not make use of the non-linear extension.  It is important to note, though, that in HEP, typically particles are subjected to a solenoidal magnetic field, which yields the non-linear helix equations.  Therefore, in HEP, one would then utilize the Extended Kalman Filter (EKF).  
 
 Kalman smoothing, however, is applicable to this example. Smoothing allows us to reuse all the information gained by the forward propagation that the inner layers did not have access to, as a weighted average. So by definition, the first smoothed state is in fact the last filtered state, as this layer has already acquired all information possible about the system from measurement updates. Then the second smoothed state is the second-to-last filtered state.  The smoothing equations themselves are bit more opaque, although a light explanation is here in addition to more info on how the KF is used in HEP:
 http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.1034&rep=rep1&type=pdf
@@ -51,7 +51,7 @@ More technical resources:
 
 ##How to run the code
 
-This code requires ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix port clocks in at roughly 10k lines of code (under the Math directory)! 
+This code requires that ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix port clocks in at roughly 10k lines of code (under the Math directory)! 
 
 ROOT can be downloaded here: https://root.cern.ch/downloading-root.
 The nice thing about the PRO releases (recommended) is that they contain binaries for given OS's.  For Mac, you can simply download the .dmg file for ROOT5 and run ROOT out-of-the-box after setting the path.
@@ -61,6 +61,6 @@ To run this code out-of-the-box (with ROOT previously installed), do the followi
 1. Compile with gcc: make main -j 2
 2. Run the executable: ./main
 3. Run validation: root -l -b -q runValidation.C
-4. View the output example pngs in the output directory validation/: x_pull_filter.png, vx_pull_filter.ong, x_pull_smooth.png, vx_pull_smooth.png, track.png
+4. View the output example pngs in the output directory validation/: x_pull_filter.png, vx_pull_filter.png, x_pull_smooth.png, vx_pull_smooth.png, track.png
 
 The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  In particular, messing with the number of hits, the associated size of the parameters and variances, and also the fudge factors, help reveal the strength of the KF when tweaking these parameters.  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
