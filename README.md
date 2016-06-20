@@ -60,7 +60,7 @@ To run this code out-of-the-box (with ROOT previously installed), do the followi
 
 1. Compile with gcc: make main -j 2
 2. Run the executable: ./main
-3. Run validation: root -l -b -q runValidation.C
-4. View the output example pngs in the output directory validation/: x_pull_filter.png, vx_pull_filter.png, x_pull_smooth.png, vx_pull_smooth.png, track.png
+3. Run validation: root -l -b -q validation/runValidation.C
+4. View the output example pngs in the output directory validation/ouput/: x_pull_filter.png, vx_pull_filter.png, x_pull_smooth.png, vx_pull_smooth.png, track.png
 
 The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  In particular, messing with the number of hits, the associated size of the parameters and variances, and also the fudge factors, help reveal the strength of the KF when tweaking these parameters.  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
