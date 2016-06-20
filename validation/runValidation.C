@@ -18,6 +18,6 @@ void runValidation() {
   // Second argument is output name of directory/rootfile/file plots
   // Third argument boolean argument == true to move input root file to output directory, false to keep input file where it is.
 
-  PlotValidation Val("validation.root","validation",true);
+  PlotValidation Val("valtree.root","output",true);
   Val.Validation();
 }

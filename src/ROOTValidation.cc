@@ -1,5 +1,5 @@
-#include "ROOTValidation.h"
-#include "Config.h"
+#include "../interface/ROOTValidation.h"
+#include "../interface/Config.h"
 
 Validation::Validation(TString fileName) {
   // define output file

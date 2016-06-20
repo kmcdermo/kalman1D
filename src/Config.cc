@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "../interface/Config.h"
 
 namespace Config{
   bool debug       = false;

@@ -1,5 +1,4 @@
-#include "Matrix.h"
-
+#include "../interface/Matrix.h"
 
 std::default_random_engine            g_gen(0xbeef0133);
 std::normal_distribution<float>       g_gaus(0.0, 1.0);

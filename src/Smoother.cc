@@ -1,8 +1,8 @@
-#include "Smoother.h"
-#include "Matrix.h"
-#include "Track.h"
-#include "Config.h"
-#include "Propagation.h"
+#include "../interface/Smoother.h"
+#include "../interface/Matrix.h"
+#include "../interface/Track.h"
+#include "../interface/Config.h"
+#include "../interface/Propagation.h"
 
 TrackState smoothState(const TrackState& inSmoothedState, const TrackState& inFilteredState){
 

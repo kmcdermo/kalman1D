@@ -1,7 +1,7 @@
-#include "Event.h"
-#include "Simulation.h"
-#include "Fitting.h"
-#include "Config.h"
+#include "../interface/Event.h"
+#include "../interface/Simulation.h"
+#include "../interface/Fitting.h"
+#include "../interface/Config.h"
 
 Event::Event(int id, Validation& v) : evtID_(id), val_(v) {
   mcTracks_.clear();

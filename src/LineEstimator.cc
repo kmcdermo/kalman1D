@@ -1,5 +1,5 @@
-#include "LineEstimator.h"
-#include "Config.h"
+#include "../interface/LineEstimator.h"
+#include "../interface/Config.h"
 
 TrackState lineSegmentPredictor(const MeasurementState& hit0, const MeasurementState& hitn){
   // use this estimate the state at one clock tick before hit0

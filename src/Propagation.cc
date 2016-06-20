@@ -1,5 +1,5 @@
-#include "Propagation.h"
-#include "Config.h"
+#include "../interface/Propagation.h"
+#include "../interface/Config.h"
 
 TrackState propagateTrackToNextState(const TrackState& inputState){
 

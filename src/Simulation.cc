@@ -1,6 +1,6 @@
-#include "Simulation.h"
-#include "Propagation.h"
-#include "Config.h"
+#include "../interface/Simulation.h"
+#include "../interface/Propagation.h"
+#include "../interface/Config.h"
 #include <iostream>
 #include <string>
 

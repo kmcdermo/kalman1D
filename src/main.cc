@@ -1,8 +1,8 @@
 #include <sstream>
 #include <list>
-#include "Event.h"
-#include "ROOTValidation.h"
-#include "Config.h"
+#include "../interface/Event.h"
+#include "../interface/ROOTValidation.h"
+#include "../interface/Config.h"
 
 typedef std::list<std::string> lStr_t;
 typedef lStr_t::iterator       lStr_i;
@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]){
   }
 
   // make one instance of the validation for all events to use
-  Validation val("validation.root");
+  Validation val("validation/valtree.root");
 
   // set values of special matrices once (same for all events) -- SMatrix really finicky
   Config::defineSpecialMatrices();
