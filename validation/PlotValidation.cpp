@@ -8,6 +8,7 @@
 #include <TCanvas.h>
 #include <TLegend.h>
 #include <iostream>
+#include <iomanip>
 
 PlotValidation::PlotValidation(TString filename, TString outdir, Bool_t mvinput) : fChain(0), inFileName(filename), outDir(outdir), mvInput(mvinput) {
   file = TFile::Open(inFileName.Data());
@@ -92,16 +93,28 @@ void PlotValidation::Validation(){
   TH1F * x_pull_filter  = new TH1F("x_pull_filter",Form("Filtered Position Pull (Layer %i only)",nHits-1),100,-5,5);
   x_pull_filter->GetXaxis()->SetTitle("x_{mc} - x_{filtered} / #sigma(x_{filtered})");
   x_pull_filter->GetYaxis()->SetTitle("nTracks");
+  x_pull_filter->Sumw2();
   TH1F * vx_pull_filter = new TH1F("vx_pull_filter",Form("Filtered Velocity Pull (Layer %i only)",nHits-1),100,-5,5);
   vx_pull_filter->GetXaxis()->SetTitle("vx_{mc} - vx_{filtered} / #sigma(vx_{filtered})");  
   vx_pull_filter->GetYaxis()->SetTitle("nTracks");
+  vx_pull_filter->Sumw2();
   TH1F * x_pull_smooth  = new TH1F("x_pull_smooth","Smoothed Position Pull (Layer 0 only)",100,-5,5);
   x_pull_smooth->GetXaxis()->SetTitle("x_{mc} - x_{smoothed} / #sigma(x_{smoothed})");
   x_pull_smooth->GetYaxis()->SetTitle("nTracks");
+  x_pull_smooth->Sumw2();
   TH1F * vx_pull_smooth = new TH1F("vx_pull_smooth","Smoothed Velocity Pull (Layer 0 only)",100,-5,5);
   vx_pull_smooth->GetXaxis()->SetTitle("vx_{mc} - vx_{smoothed} / #sigma(vx_{smoothed})");  
   vx_pull_smooth->GetYaxis()->SetTitle("nTracks");
-
+  vx_pull_smooth->Sumw2();
+  TH1F * x_factor  = new TH1F("x_factor",Form("Position Factor (Layer %i only)",nHits/2),150,0,15);
+  x_factor->GetXaxis()->SetTitle("|x_{s} - x_{mc} / x_{f} - x_{mc}|");
+  x_factor->GetYaxis()->SetTitle("nTracks");
+  x_factor->Sumw2();
+  TH1F * vx_factor = new TH1F("vx_factor",Form("Velocity Factor (Layer %i only)",nHits/2),150,0,15);
+  vx_factor->GetXaxis()->SetTitle("|vx_{s} - vx_{mc} / vx_{f} - vx_{mc}|");
+  vx_factor->GetYaxis()->SetTitle("nTracks");
+  vx_factor->Sumw2();
+  
   // follow trajectory of single track!
   TGraphErrors * tg_mctrack   = new TGraphErrors(nHits);
   tg_mctrack->SetTitle("Position vs. Time of a single track;Time [s];Position [cm]");
@@ -158,13 +171,51 @@ void PlotValidation::Validation(){
       x_pull_filter ->Fill((x_mc  - x_filter)  / std::sqrt(exx_filter));
       vx_pull_filter->Fill((vx_mc - vx_filter) / std::sqrt(evxvx_filter));
     }
+
+    if (layer == nHits / 2)
+    {
+      x_factor ->Fill(std::abs((x_smooth  - x_mc )/(x_filter  - x_mc )));
+      vx_factor->Fill(std::abs((vx_smooth - vx_mc)/(vx_filter - vx_mc)));
+    }
   }
 
-  // fit pulls
+  // scale and fit pulls
+  x_pull_filter->Scale(1.f/x_pull_filter->Integral());
   x_pull_filter ->Fit("gaus","","",-3.,3.);
+
+  vx_pull_filter->Scale(1.f/vx_pull_filter->Integral());
   vx_pull_filter->Fit("gaus","","",-3.,3.);
+
+  x_pull_smooth->Scale(1.f/x_pull_smooth->Integral());
   x_pull_smooth ->Fit("gaus","","",-3.,3.);
+
+  vx_pull_smooth->Scale(1.f/vx_pull_smooth->Integral());
   vx_pull_smooth->Fit("gaus","","",-3.,3.);
+
+  x_factor->Scale(1.f/x_factor->Integral());
+  vx_factor->Scale(1.f/vx_factor->Integral());
+
+  std::cout << std::endl << std::endl;
+  
+  double integral = 0.;
+  for (Int_t ibin = 1; ibin <= x_factor->GetNbinsX(); ibin++)
+  {
+    if (x_factor->GetXaxis()->GetBinUpEdge(ibin) >= 1.f) break;
+    integral += x_factor->GetBinContent(ibin);
+  }
+  std::cout << "Percent smoothed better than filtered: " 
+	    << std::setprecision(3) << integral*100. << "%" << std::endl;
+
+  integral = 0.;
+  for (Int_t ibin = 1; ibin <= vx_factor->GetNbinsX(); ibin++)
+  {
+    if (vx_factor->GetXaxis()->GetBinUpEdge(ibin) >= 1.f) break;
+    integral += vx_factor->GetBinContent(ibin);
+  }
+  std::cout << "Percent smoothed better than filtered: " 
+	    << std::setprecision(3) << integral*100. << "%" << std::endl;
+
+  std::cout << std::endl << std::endl;
 
   // now draw and save pulls
   TCanvas * canvas = new TCanvas();
@@ -181,12 +232,20 @@ void PlotValidation::Validation(){
   
   vx_pull_smooth->Draw();
   canvas->SaveAs(Form("%s/vx_pull_smooth.png",outDir.Data()));
+  
+  x_factor->Draw();
+  canvas->SaveAs(Form("%s/x_factor.png",outDir.Data()));
+
+  vx_factor->Draw();
+  canvas->SaveAs(Form("%s/vx_factor.png",outDir.Data()));
 
   delete canvas;
   delete x_pull_filter;
   delete vx_pull_filter;
   delete x_pull_smooth;
   delete vx_pull_smooth;
+  delete x_factor;
+  delete vx_factor;
 
   // now draw overlay of track and save it
 
