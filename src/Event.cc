@@ -3,7 +3,7 @@
 #include "../interface/Fitting.hh"
 #include "../interface/Config.hh"
 
-Event::Event(int id, Validation& v) : evtID_(id), val_(v) 
+Event::Event(int id, ROOTValidation& v) : evtID_(id), val_(v) 
 {
   mcTracks_.clear();
   filteredTracks_.clear();

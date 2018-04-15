@@ -5,47 +5,47 @@
 
 namespace Config
 {
-  // Simulation Config
-  constexpr float startpos = 1.0; // 1cm
-  constexpr float startvel = 20.0; // 20cm/s
-  constexpr int   nHits    = 20;
+  // General config
+  extern bool debug;   // turn on printouts
+  extern bool useLineEst;  // use initial guess with straight line
+  extern bool useSmoother; // turn on Kalman smoothing
 
-  // noise uncertainty + variances
-  constexpr float processNoisePos = 0.1; // 1mm 
-  constexpr float varPNPos        = processNoisePos * processNoisePos; 
-  constexpr float processNoiseVel = 0.5; // 5mm/s
-  constexpr float varPNVel        = processNoiseVel * processNoiseVel; 
-  constexpr float measNoisePos    = 0.1; // 1mm
-  constexpr float varMNPos        = measNoisePos * measNoisePos;
+  // Event config
+  extern int  nEvents; // number of events to simulate + filter [+ smooth]
+  extern int  nTracks; // number of tracks / event
+  extern int  nHits;   // number of hits / track
+
+  // Simulation config
+  extern float startpos; // max starting position per track [cm] 
+  extern float startvel; // max starting velocity per track [cm/s]
+  extern float deltaT;   // time between hits (constant) [s]
+
+  // Initial estimation options
+  extern int  diff_ticks;  // for line guess (nHits - 1 ensures the largest lever arm)
+
+  // Noise uncertainty + variances
+  extern float processNoisePos; // noise on position propagation [cm]
+  extern float varPNPos;        // processNoisePos * processNoisePos [cm^2] 
+  extern float processNoiseVel; // noise on velocity propagation [cm/s]
+  extern float varPNVel;        // processNoiseVel * processNoiseVel [cm^2/s^2]
+  extern float measNoisePos;    // uncertainty from measurements (constant) [cm]
+  extern float varMNPos;        // measNoisePos * measNoisePos [cm^2]
 
   // Scale factors on over/under estimating variances
-  constexpr float processNoisePosSF = 1.0; // position variance fudge factor
-  constexpr float processNoiseVelSF = 1.0; // velocity variance fudge factor
-  constexpr float measNoisePosSF    = 1.0; // measurement noise fudge factor
-
-  // General config
-  extern    bool debug;
-  constexpr int  nEvents = 100;
-  constexpr int  nTracks = 500;
-
-  // Propagation config
-  constexpr float deltaT = 0.1;   // 0.1s
-
-  // Fitting config
-  extern    bool useLineEst;
-  constexpr int  diff_ticks = nHits - 1;  // for line guess (nHits - 1 ensures the largest lever arm)
-  extern    bool useSmoother;
+  extern float processNoisePosSF; // position variance fudge factor
+  extern float processNoiseVelSF; // velocity variance fudge factor
+  extern float measNoisePosSF;    // measurement noise fudge factor
 
   // Special Matrices: set in defineSpecialMatries() as SMatrix is finicky
-  extern SMatrix22 idenMatrix22; // 2x2 identity matrix
-  extern SMatrix12 projMatrix;   // define projection matrices
-  extern SMatrix21 projMatrixT;  // transpose
+  extern SMatrix22 idenMatrix22;     // 2x2 identity matrix
+  extern SMatrix12 projMatrix;       // define projection matrices
+  extern SMatrix21 projMatrixT;      // transpose of projection matrix
   extern SMatrix22 transitionMatrix; // define transition matrix --> Jacobian in other words (i.e. propagation model)
   extern SMatrix22 processNoise;     // define process noise (i.e. disturbances in propagation)
   extern SMatrix11 measurementNoise; // define measurement noise matrix
-  void defineSpecialMatrices();
+
+  // Assign values to parameters based on inputs
+  void AssignDependentConfig();
 };
 
-
-
-#endif 
+#endif

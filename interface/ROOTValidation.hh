@@ -9,10 +9,12 @@
 #include "Track.hh"
 #include "Hit.hh"
 
-class Validation{
+class ROOTValidation
+{
+public:
+  ROOTValidation(TString fileName);
+  ~ROOTValidation();
 
- public:
-  Validation(TString fileName);
   void initializeTree();
   void initializeConfigTree();
   void fillTree(int evtID, const TrackVec& evt_mc_tracks, 
@@ -20,7 +22,7 @@ class Validation{
   void fillConfigTree();
   void saveValidation();
 
- private:
+private:
   TFile * f_;
 
   // track tree

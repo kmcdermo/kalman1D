@@ -37,7 +37,7 @@ typedef std::vector<TrackState> TrackStateVec;
 
 class Track
 {
- public:
+public:
   Track() {}
   Track(const TrackState &tsInit, const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsInit_(tsInit), tsVec_(tsvec), hitVec_(msvec) {}
   
@@ -71,7 +71,7 @@ class Track
   float getSumChi2() const;
   std::vector<float> getChi2Vec() const {return chi2Vec_;}
 
- private:
+private:
   TrackState          tsInit_;
   TrackStateVec       tsVec_;
   MeasurementStateVec hitVec_;

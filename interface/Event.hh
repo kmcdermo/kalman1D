@@ -7,17 +7,18 @@
 
 class Event
 {
- public:
-  Event(int id, Validation& v);
+public:
+  Event(int id, ROOTValidation& v);
   void Simulate();
   void Fit();
   void Validate();
 
   int evtID() const {return evtID_;}
- private:
+
+private:
   TrackVec mcTracks_, filteredTracks_, smoothedTracks_;
   int evtID_;
-  Validation& val_;
+  ROOTValidation& val_;
 };
 
 #endif 

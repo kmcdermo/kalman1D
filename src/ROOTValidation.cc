@@ -1,7 +1,7 @@
 #include "../interface/ROOTValidation.hh"
 #include "../interface/Config.hh"
 
-Validation::Validation(TString fileName) 
+ROOTValidation::ROOTValidation(TString fileName) 
 {
   // define output file
   f_ = new TFile(fileName.Data(),"RECREATE");
@@ -10,7 +10,14 @@ Validation::Validation(TString fileName)
   initializeConfigTree();
 }
 
-void Validation::initializeTree()
+ROOTValidation::~ROOTValidation()
+{
+  delete tree_;
+  delete configtree_;
+  delete f_;
+}
+
+void ROOTValidation::initializeTree()
 {
   // define output tree
   tree_ = new TTree("tree","tree");
@@ -42,33 +49,39 @@ void Validation::initializeTree()
   tree_->Branch("evxx_smooth", &evxx_smooth_);
   tree_->Branch("exx_hit", &exx_hit_);
 
-  //chi2
+  // chi2
   tree_->Branch("chi2", &chi2_);
 }
 
-void Validation::initializeConfigTree()
+void ROOTValidation::initializeConfigTree()
 {
   // define config tree;
   configtree_ = new TTree("configtree","configtree");
+
   // define branches
+  configtree_->Branch("useLineEst",&useLineEst_);
+  configtree_->Branch("useSmoother",&useSmoother_);
+
+  configtree_->Branch("nEvents",&nEvents_);
+  configtree_->Branch("nTracks",&nTracks_);
+  configtree_->Branch("nHits",&nHits_);
+
   configtree_->Branch("startpos",&startpos_);
   configtree_->Branch("startvel",&startvel_);
-  configtree_->Branch("nHits",&nHits_);
+  configtree_->Branch("deltaT",&deltaT_);
+
+  configtree_->Branch("diff_ticks",&diff_ticks_);
+
   configtree_->Branch("processNoisePos",&processNoisePos_);
   configtree_->Branch("processNoiseVel",&processNoiseVel_);
   configtree_->Branch("measNoisePos",&measNoisePos_);
+
   configtree_->Branch("processNoisePosSF",&processNoisePosSF_);
   configtree_->Branch("processNoiseVelSF",&processNoiseVelSF_);
   configtree_->Branch("measNoisePosSF",&measNoisePosSF_);
-  configtree_->Branch("nEvents",&nEvents_);
-  configtree_->Branch("nTracks",&nTracks_);
-  configtree_->Branch("deltaT",&deltaT_);
-  configtree_->Branch("useLineEst",&useLineEst_);
-  configtree_->Branch("diff_ticks",&diff_ticks_);
-  configtree_->Branch("useSmoother",&useSmoother_);
 }
 
-void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackVec& evt_filtered_tracks, const TrackVec& evt_smoothed_tracks)
+void ROOTValidation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackVec& evt_filtered_tracks, const TrackVec& evt_smoothed_tracks)
 {
   // loop over tracks, then hits, fill once per "layer", same ntracks for mc and reco
   for (int itrack = 0; itrack < Config::nTracks; itrack++)
@@ -152,36 +165,41 @@ void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackV
 
       // fill tree once per hit per track pair
       tree_->Fill();
-    }
-  } //end loop over nTracks
+    } // end loop over nLayers
+  } // end loop over nTracks
 }
 
-void Validation::fillConfigTree()
+void ROOTValidation::fillConfigTree()
 {
   // store all config values in a seperate tree 
+  useLineEst_        = Config::useLineEst;
+  useSmoother_       = Config::useSmoother;
+
+  nEvents_           = Config::nEvents;
+  nTracks_           = Config::nTracks;
+  nHits_             = Config::nHits;
+
   startpos_          = Config::startpos;
   startvel_          = Config::startvel;
-  nHits_             = Config::nHits;
+  deltaT_            = Config::deltaT;
+
+  diff_ticks_        = Config::diff_ticks;
+
   processNoisePos_   = Config::processNoisePos;
   processNoiseVel_   = Config::processNoiseVel;
   measNoisePos_      = Config::measNoisePos;
+
   processNoisePosSF_ = Config::processNoisePosSF;
   processNoiseVelSF_ = Config::processNoiseVelSF;
   measNoisePosSF_    = Config::measNoisePosSF;
-  nEvents_           = Config::nEvents;
-  nTracks_           = Config::nTracks;
-  deltaT_            = Config::deltaT;
-  useLineEst_        = Config::useLineEst;
-  diff_ticks_        = Config::diff_ticks;
-  useSmoother_       = Config::useSmoother;
   
   // fill at end of main()
   configtree_->Fill();
 }
 
-void Validation::saveValidation()
+void ROOTValidation::saveValidation()
 {
   f_->cd();
-  f_->Write();
-  f_->Close();
+  tree_->Write();
+  configtree_->Write();
 }
