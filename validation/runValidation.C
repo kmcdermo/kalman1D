@@ -1,23 +1,12 @@
-void setupcpp11(){ // customize ACLiC's behavior ...
-  TString o;
-  // customize MakeSharedLib
-  o = TString(gSystem->GetMakeSharedLib());
-  o = o.ReplaceAll(" -c ", " -std=c++11 -c ");
-  gSystem->SetMakeSharedLib(o.Data());
-  // customize MakeExe
-  o = TString(gSystem->GetMakeExe());
-  o = o.ReplaceAll(" -c ", " -std=c++11 -c ");
-  gSystem->SetMakeExe(o.Data());
-} 
+#include "validation/PlotValidation.cpp+"
+#include "TString.h"
 
-void runValidation() {
-  setupcpp11(); //  use this to get PlotValidation to compile with c++11
-  gROOT->LoadMacro("PlotValidation.cpp++g");//compile the code
-
+void runValidation(const TString & infile = "valtree.root", const TString & outdir = "output", const Bool_t moveInput = true) 
+{
   // First argument is input name of root file
   // Second argument is output name of directory/rootfile/file plots
   // Third argument boolean argument == true to move input root file to output directory, false to keep input file where it is.
 
-  PlotValidation Val("valtree.root","output",true);
+  PlotValidation Val(infile,outdir,moveInput);
   Val.Validation();
 }

@@ -51,16 +51,16 @@ More technical resources:
 
 ##How to run the code
 
-This code requires that ROOT5 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix port clocks in at roughly 10k lines of code (under the Math directory)! 
+This code requires that ROOT6 is enabled on your machine.  It compiles with gcc; so on Mac, this will pick up clang.  This code also contains a port of SMatrix, a vectorizable template matrix operations library.  The SMatrix port clocks in at roughly 10k lines of code (under the Math directory)! 
 
 ROOT can be downloaded here: https://root.cern.ch/downloading-root.
 The nice thing about the PRO releases (recommended) is that they contain binaries for given OS's.  For Mac, you can simply download the .dmg file for ROOT5 and run ROOT out-of-the-box after setting the path.
 
 To run this code out-of-the-box (with ROOT previously installed), do the following:
 
-1. Compile with gcc: make main -j 2
+1. Compile with gcc: make main -j 4
 2. Run the executable: ./main
-3. Run validation: root -l -b -q validation/runValidation.C
+3. Run validation: ./scripts/runValidation.sh
 4. View the output example pngs in the output directory validation/ouput/: x_pull_filter.png, vx_pull_filter.png, x_pull_smooth.png, vx_pull_smooth.png, track.png
 
-The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.h!  In particular, messing with the number of hits, the associated size of the parameters and variances, and also the fudge factors, help reveal the strength of the KF when tweaking these parameters.  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.
+The executable (main) has a number of command line options.  Use ./main --help to view them.  Feel free to mess with the set parameters in Config.hh through the command line!  In particular, messing with the number of hits, the associated size of the parameters and variances, and also the fudge factors, help reveal the strength of the KF when tweaking these parameters.  Out-of-the-box running uses an estimate of the vertex position and velocity off a simple fit to a line.  It also performs the smoothing immediately following filtering.

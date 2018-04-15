@@ -69,7 +69,7 @@ int main(int argc, const char* argv[])
   }
 
   // make one instance of the validation for all events to use
-  Validation val("validation/valtree.root");
+  Validation val("valtree.root");
 
   // set values of special matrices once (same for all events) -- SMatrix really finicky
   Config::defineSpecialMatrices();
