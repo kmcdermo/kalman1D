@@ -1,7 +1,8 @@
-#include "../interface/Update.h"
-#include "../interface/Config.h"
+#include "../interface/Update.hh"
+#include "../interface/Config.hh"
 
-TrackState updateTrackState(const TrackState & propState, const MeasurementState & hit){
+TrackState updateTrackState(const TrackState & propState, const MeasurementState & hit)
+{
   // get inputs
   const SVector2&  propparams = propState.parameters;
   const SMatrix22& properrs   = propState.errors;
@@ -22,7 +23,8 @@ TrackState updateTrackState(const TrackState & propState, const MeasurementState
   return updatedState;
 }
 
-float computeChi2(const TrackState & updatedState, const MeasurementState & hit){
+float computeChi2(const TrackState & updatedState, const MeasurementState & hit)
+{
   int invFail(0);
   const SVector1  residualparams  = hit.parameters - Config::projMatrix*updatedState.parameters;  
   const SMatrix11 residualerrs    = hit.errors     - Config::projMatrix*updatedState.errors*Config::projMatrixT; //covariance of filtered residauls

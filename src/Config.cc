@@ -1,6 +1,7 @@
-#include "../interface/Config.h"
+#include "../interface/Config.hh"
 
-namespace Config{
+namespace Config
+{
   bool debug       = false;
   bool useLineEst  = true;
   bool useSmoother = true;
@@ -12,7 +13,8 @@ namespace Config{
   SMatrix22 processNoise     = ROOT::Math::SMatrixIdentity();
   SMatrix11 measurementNoise = ROOT::Math::SMatrixIdentity();
   
-  void defineSpecialMatrices(){
+  void defineSpecialMatrices()
+  {
     // set individual elements
     transitionMatrix(0,1) = deltaT;
 

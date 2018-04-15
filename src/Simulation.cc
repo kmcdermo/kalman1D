@@ -1,10 +1,12 @@
-#include "../interface/Simulation.h"
-#include "../interface/Propagation.h"
-#include "../interface/Config.h"
+#include "../interface/Simulation.hh"
+#include "../interface/Propagation.hh"
+#include "../interface/Config.hh"
+
 #include <iostream>
 #include <string>
 
-void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, MeasurementStateVec& hits){
+void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, MeasurementStateVec& hits)
+{
   // generate starting position, velocity near origin
   float pos = Config::startpos*g_unif(g_gen);
   float vel = Config::startvel*g_unif(g_gen);
@@ -22,8 +24,10 @@ void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, Measureme
   mcgen.errors=cov;
 
   TrackState tmpState = mcgen; // input into propagation
-  for (int ihit = 0; ihit < Config::nHits; ihit++){
-    if (Config::debug) { 
+  for (int ihit = 0; ihit < Config::nHits; ihit++)
+  {
+    if (Config::debug) 
+    { 
       std::cout << "Layer: " << ihit << std::endl;
       tmpState.dumpTrackState("initState");
     }
@@ -31,7 +35,8 @@ void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, Measureme
     // First do "prediction"
     TrackState propState = propagateTrackToNextState(tmpState);
 
-    if (Config::debug) { 
+    if (Config::debug) 
+    { 
       propState.dumpTrackState("propState before process noise");
     }
 
@@ -39,7 +44,8 @@ void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, Measureme
     propState.parameters(0) += Config::processNoisePos * g_gaus(g_gen);
     propState.parameters(1) += Config::processNoiseVel * g_gaus(g_gen);
 
-    if (Config::debug) { 
+    if (Config::debug) 
+    { 
       propState.dumpTrackState("propState after process noise");
     }
     
@@ -55,7 +61,8 @@ void setupTrackByToyMC(TrackState& mcgen, TrackStateVec& mcTruthTSVec, Measureme
     hit.errors=Config::measurementNoise;
     hits.push_back(hit);
 
-    if (Config::debug) { 
+    if (Config::debug) 
+    { 
       std::cout << "Hit measurement" << std::endl;
       dumpVector(hit.parameters);
       std::cout << std::endl;

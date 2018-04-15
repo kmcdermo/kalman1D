@@ -6,8 +6,8 @@
 #include "TFile.h"
 #include "TTree.h"
 
-#include "../interface/Track.h"
-#include "../interface/Hit.h"
+#include "Track.hh"
+#include "Hit.hh"
 
 class Validation{
 

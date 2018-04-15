@@ -1,7 +1,8 @@
-#include "../interface/ROOTValidation.h"
-#include "../interface/Config.h"
+#include "../interface/ROOTValidation.hh"
+#include "../interface/Config.hh"
 
-Validation::Validation(TString fileName) {
+Validation::Validation(TString fileName) 
+{
   // define output file
   f_ = new TFile(fileName.Data(),"RECREATE");
   
@@ -9,7 +10,8 @@ Validation::Validation(TString fileName) {
   initializeConfigTree();
 }
 
-void Validation::initializeTree(){
+void Validation::initializeTree()
+{
   // define output tree
   tree_ = new TTree("tree","tree");
 
@@ -44,7 +46,8 @@ void Validation::initializeTree(){
   tree_->Branch("chi2", &chi2_);
 }
 
-void Validation::initializeConfigTree(){
+void Validation::initializeConfigTree()
+{
   // define config tree;
   configtree_ = new TTree("configtree","configtree");
   // define branches
@@ -65,9 +68,11 @@ void Validation::initializeConfigTree(){
   configtree_->Branch("useSmoother",&useSmoother_);
 }
 
-void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackVec& evt_filtered_tracks, const TrackVec& evt_smoothed_tracks){
-  // loop over tracks, then hits, fill once per "layer"
-  for (int itrack = 0; itrack < Config::nTracks; itrack++){ // same ntracks for mc and reco
+void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackVec& evt_filtered_tracks, const TrackVec& evt_smoothed_tracks)
+{
+  // loop over tracks, then hits, fill once per "layer", same ntracks for mc and reco
+  for (int itrack = 0; itrack < Config::nTracks; itrack++)
+  { 
     evtID_   = evtID;
     trackID_ = itrack;
 
@@ -118,7 +123,8 @@ void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackV
     // use dummy counter to tally smoother counter which goes in the other direction
     // fill tree over per layer
     int ihit_rev = Config::nHits-1;
-    for (int ihit = 0; ihit < Config::nHits; ihit++, ihit_rev--){
+    for (int ihit = 0; ihit < Config::nHits; ihit++, ihit_rev--)
+    {
       layer_ = ihit; // one hit per layer
       
       // parameters
@@ -150,7 +156,8 @@ void Validation::fillTree(int evtID, const TrackVec& evt_mc_tracks, const TrackV
   } //end loop over nTracks
 }
 
-void Validation::fillConfigTree(){
+void Validation::fillConfigTree()
+{
   // store all config values in a seperate tree 
   startpos_          = Config::startpos;
   startvel_          = Config::startvel;
@@ -172,7 +179,8 @@ void Validation::fillConfigTree(){
   configtree_->Fill();
 }
 
-void Validation::saveValidation(){
+void Validation::saveValidation()
+{
   f_->cd();
   f_->Write();
   f_->Close();

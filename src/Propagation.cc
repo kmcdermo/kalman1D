@@ -1,8 +1,8 @@
-#include "../interface/Propagation.h"
-#include "../interface/Config.h"
+#include "../interface/Propagation.hh"
+#include "../interface/Config.hh"
 
-TrackState propagateTrackToNextState(const TrackState& inputState){
-
+TrackState propagateTrackToNextState(const TrackState& inputState)
+{
   // get initial values
   const SVector2&  inparams = inputState.parameters;
   const SMatrix22& inerrs   = inputState.errors;

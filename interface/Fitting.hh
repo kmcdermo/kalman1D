@@ -1,7 +1,7 @@
 #ifndef _fitting_
 #define _fitting_
 
-#include "Track.h"
+#include "Track.hh"
 
 void trackFitter(const TrackVec& evt_mc_tracks, TrackVec& evt_filtered_tracks, TrackVec& evt_smoothed_tracks);
 void filterTrack(const Track& mctrack, Track& filteredtrack);

@@ -1,11 +1,11 @@
-#include "../interface/Smoother.h"
-#include "../interface/Matrix.h"
-#include "../interface/Track.h"
-#include "../interface/Config.h"
-#include "../interface/Propagation.h"
+#include "../interface/Smoother.hh"
+#include "../interface/Matrix.hh"
+#include "../interface/Track.hh"
+#include "../interface/Config.hh"
+#include "../interface/Propagation.hh"
 
-TrackState smoothState(const TrackState& inSmoothedState, const TrackState& inFilteredState){
-
+TrackState smoothState(const TrackState& inSmoothedState, const TrackState& inFilteredState)
+{
   // define references
   const auto& inSmoothPars = inSmoothedState.parameters;
   const auto& inSmoothErrs = inSmoothedState.errors;

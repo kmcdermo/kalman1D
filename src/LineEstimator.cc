@@ -1,7 +1,8 @@
-#include "../interface/LineEstimator.h"
-#include "../interface/Config.h"
+#include "../interface/LineEstimator.hh"
+#include "../interface/Config.hh"
 
-TrackState lineSegmentPredictor(const MeasurementState& hit0, const MeasurementState& hitn){
+TrackState lineSegmentPredictor(const MeasurementState& hit0, const MeasurementState& hitn)
+{
   // use this estimate the state at one clock tick before hit0
   const float x0 = hit0.x(); const float xn = hitn.x();
 

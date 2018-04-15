@@ -1,10 +1,11 @@
 #ifndef _hit_
 #define _hit_
 
-#include "Matrix.h"
+#include "Matrix.hh"
 #include <vector>
 
-struct MeasurementState{
+struct MeasurementState
+{
   MeasurementState() {}
   MeasurementState(const SVector1 & par, const SMatrix11 & cov) : parameters(par), errors(cov) {}
   SVector1  parameters;

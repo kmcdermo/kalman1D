@@ -1,7 +1,7 @@
 #ifndef _config_
 #define _config_
 
-#include "Matrix.h"
+#include "Matrix.hh"
 
 namespace Config
 {

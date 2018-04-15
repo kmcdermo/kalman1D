@@ -1,13 +1,15 @@
 #ifndef _track_
 #define _track_
 
-#include "Matrix.h"
-#include "Hit.h"
+#include "Matrix.hh"
+#include "Hit.hh"
+
 #include <vector>
 #include <string>
 #include <iostream>
 
-struct TrackState{
+struct TrackState
+{
   TrackState() {}
   TrackState(const SVector2 & par, const SMatrix22 & cov) : parameters(par), errors(cov) {}
   SVector2  parameters;
@@ -33,7 +35,8 @@ struct TrackState{
 
 typedef std::vector<TrackState> TrackStateVec;
 
-class Track{
+class Track
+{
  public:
   Track() {}
   Track(const TrackState &tsInit, const TrackStateVec& tsvec, const MeasurementStateVec& msvec) : tsInit_(tsInit), tsVec_(tsvec), hitVec_(msvec) {}

@@ -1,32 +1,39 @@
+#include "../interface/Event.hh"
+#include "../interface/ROOTValidation.hh"
+#include "../interface/Config.hh"
+
 #include <sstream>
 #include <list>
-#include "../interface/Event.h"
-#include "../interface/ROOTValidation.h"
-#include "../interface/Config.h"
 
 typedef std::list<std::string> lStr_t;
 typedef lStr_t::iterator       lStr_i;
 
-void next_arg_or_die(lStr_t& args, lStr_i& i, bool allow_single_minus=false){
+void next_arg_or_die(lStr_t& args, lStr_i& i, bool allow_single_minus=false)
+{
   lStr_i j = i;
   if (++j == args.end() ||
-      ((*j)[0] == '-' && ! (*j == "-" && allow_single_minus))) {
+      ((*j)[0] == '-' && ! (*j == "-" && allow_single_minus))) 
+  {
     std::cerr <<"Error: option "<< *i <<" requires an argument.\n";
     exit(1);
   }
   i = j;
 }
 
-int main(int argc, const char* argv[]){
+int main(int argc, const char* argv[])
+{
   lStr_t mArgs; 
-  for (int i = 1; i < argc; ++i){
+  for (int i = 1; i < argc; ++i)
+  {
     mArgs.push_back(argv[i]);
   }
 
   lStr_i i  = mArgs.begin();
-  while (i != mArgs.end()){
+  while (i != mArgs.end())
+  {
     lStr_i start = i;
-    if (*i == "-h" || *i == "-help" || *i == "--help"){
+    if (*i == "-h" || *i == "-help" || *i == "--help")
+    {
       printf(
 	     "Usage: %s [options]\n"
 	     "Options:\n"
@@ -41,16 +48,20 @@ int main(int argc, const char* argv[]){
 	     );
       exit(0);
     }
-    else if (*i == "--debug"){
+    else if (*i == "--debug")
+    {
       Config::debug = true;
     }
-    else if (*i == "--mc-init"){
+    else if (*i == "--mc-init")
+    {
       Config::useLineEst = false;
     }
-    else if (*i == "--no-smoother"){
+    else if (*i == "--no-smoother")
+    {
       Config::useSmoother = false;
     }
-    else{
+    else
+    {
       fprintf(stderr, "Error: Unknown option/argument '%s'.\n", i->c_str());
       exit(1);
     }
@@ -63,7 +74,8 @@ int main(int argc, const char* argv[]){
   // set values of special matrices once (same for all events) -- SMatrix really finicky
   Config::defineSpecialMatrices();
 
-  for (int i = 0; i < Config::nEvents; i++){
+  for (int i = 0; i < Config::nEvents; i++)
+  {
     Event ev(i,val);
     std::cout << "Event #" << ev.evtID() << std::endl;
     ev.Simulate();
